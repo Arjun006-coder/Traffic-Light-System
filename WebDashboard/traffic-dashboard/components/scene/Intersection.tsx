@@ -20,25 +20,25 @@ export default function Intersection({ position, name, vehicleData, lightStatus 
     { 
       lane: 'north', 
       lightPos: [0, 0, -13] as [number, number, number], 
-      vehicleStart: [0, 0.5, -25] as [number, number, number], 
+      vehicleStart: [0, 0.5, -28] as [number, number, number], 
       direction: 'z' as const
     },
     { 
       lane: 'south', 
       lightPos: [0, 0, 13] as [number, number, number], 
-      vehicleStart: [0, 0.5, 25] as [number, number, number], 
+      vehicleStart: [0, 0.5, 28] as [number, number, number], 
       direction: '-z' as const
     },
     { 
       lane: 'east', 
       lightPos: [13, 0, 0] as [number, number, number], 
-      vehicleStart: [25, 0.5, 0] as [number, number, number], 
+      vehicleStart: [28, 0.5, 0] as [number, number, number], 
       direction: '-x' as const
     },
     { 
       lane: 'west', 
       lightPos: [-13, 0, 0] as [number, number, number], 
-      vehicleStart: [-25, 0.5, 0] as [number, number, number], 
+      vehicleStart: [-28, 0.5, 0] as [number, number, number], 
       direction: 'x' as const
     },
   ]
@@ -48,36 +48,46 @@ export default function Intersection({ position, name, vehicleData, lightStatus 
       {/* Intersection platform */}
       <mesh receiveShadow position={[0, 0, 0]}>
         <boxGeometry args={[24, 0.3, 24]} />
-        <meshStandardMaterial color="#4a4a4a" />
+        <meshStandardMaterial color="#4a4a4a" polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
       
-      {/* North road */}
-      <mesh position={[0, 0, -24]} receiveShadow>
-        <boxGeometry args={[8, 0.3, 24]} />
-        <meshStandardMaterial color="#6a6a6a" />
+      {/* North road - from edge (z=-12) to z≈-33 */}
+      <mesh position={[0, 0.02, -22.5]} receiveShadow>
+        <boxGeometry args={[8, 0.3, 21]} />
+        <meshStandardMaterial color="#6a6a6a" polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
       
-      {/* South road */}
-      <mesh position={[0, 0, 24]} receiveShadow>
-        <boxGeometry args={[8, 0.3, 24]} />
-        <meshStandardMaterial color="#6a6a6a" />
+      {/* South road - from edge (z=12) to z≈33 */}
+      <mesh position={[0, 0.02, 22.5]} receiveShadow>
+        <boxGeometry args={[8, 0.3, 21]} />
+        <meshStandardMaterial color="#6a6a6a" polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
       
-      {/* East road */}
-      <mesh position={[24, 0, 0]} receiveShadow>
-        <boxGeometry args={[24, 0.3, 8]} />
-        <meshStandardMaterial color="#6a6a6a" />
+      {/* East road - from edge (x=12) to x≈33 */}
+      <mesh position={[22.5, 0.02, 0]} receiveShadow>
+        <boxGeometry args={[21, 0.3, 8]} />
+        <meshStandardMaterial color="#6a6a6a" polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
       
-      {/* West road */}
-      <mesh position={[-24, 0, 0]} receiveShadow>
-        <boxGeometry args={[24, 0.3, 8]} />
-        <meshStandardMaterial color="#6a6a6a" />
+      {/* West road - from edge (x=-12) to x≈-33 */}
+      <mesh position={[-22.5, 0.02, 0]} receiveShadow>
+        <boxGeometry args={[21, 0.3, 8]} />
+        <meshStandardMaterial color="#6a6a6a" polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
       
       {/* Road markings */}
       <RoadMarkings />
       
+      {/* Overlay continuous road surfaces over the platform to visually connect lanes */}
+      <mesh position={[0, 0.021, 0]} receiveShadow>
+        <boxGeometry args={[28, 0.04, 10]} />
+        <meshStandardMaterial color="#6a6a6a" polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
+      </mesh>
+      <mesh position={[0, 0.022, 0]} receiveShadow>
+        <boxGeometry args={[10, 0.04, 28]} />
+        <meshStandardMaterial color="#6a6a6a" polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
+      </mesh>
+
       {/* Traffic lights and vehicles for each lane */}
       {lanes.map(({ lane, lightPos, vehicleStart, direction }) => {
         const key = `${name}-${lane}`

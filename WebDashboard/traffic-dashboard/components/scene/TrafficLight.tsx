@@ -18,17 +18,17 @@ export default function TrafficLight({ position, currentColor }: TrafficLightPro
   useFrame(() => {
     if (redRef.current) {
       const material = redRef.current.material as any
-      const target = currentColor === 'red' ? 1.0 : 0.1
+      const target = currentColor === 'red' ? 1.0 : 0.02
       material.emissiveIntensity += (target - material.emissiveIntensity) * 0.1
     }
     if (yellowRef.current) {
       const material = yellowRef.current.material as any
-      const target = currentColor === 'yellow' ? 1.0 : 0.1
+      const target = currentColor === 'yellow' ? 1.0 : 0.02
       material.emissiveIntensity += (target - material.emissiveIntensity) * 0.1
     }
     if (greenRef.current) {
       const material = greenRef.current.material as any
-      const target = currentColor === 'green' ? 1.0 : 0.1
+      const target = currentColor === 'green' ? 1.0 : 0.02
       material.emissiveIntensity += (target - material.emissiveIntensity) * 0.1
     }
   })

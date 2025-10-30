@@ -16,9 +16,19 @@ export default function TrafficScene3D() {
   const debouncedLights = useDebounce(lightStatus, 150)
   
   return (
-    <div className="w-full h-full bg-[#0a0a0a] relative">
-      <div className="absolute top-4 left-4 z-10 bg-black/60 text-white px-3 py-2 rounded text-xs">
-        🖱️ Drag to rotate • Scroll to zoom • Right-click to pan
+    <div className="w-full h-full bg-gradient-to-b from-[#1a1f2e] to-[#0f1419] relative">
+      <div className="absolute top-6 left-6 z-10 glass-effect px-4 py-3 rounded-lg border border-gray-700">
+        <div className="flex items-center gap-3">
+          <div className="flex gap-2">
+            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+            <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse delay-75" />
+            <div className="w-2 h-2 rounded-full bg-pink-500 animate-pulse delay-150" />
+          </div>
+          <div>
+            <p className="text-xs font-semibold text-white">3D Traffic Visualization</p>
+            <p className="text-[10px] text-gray-400">🖱️ Drag • 🔍 Scroll • 🤚 Right-click</p>
+          </div>
+        </div>
       </div>
       
       <Canvas shadows gl={{ antialias: true }}>
@@ -37,8 +47,9 @@ export default function TrafficScene3D() {
         <ambientLight intensity={1.2} />
         <directionalLight
           position={[60, 60, 60]}
-          intensity={0.7}
+          intensity={0.9}
           castShadow
+          shadow-bias={-0.0005}
           shadow-mapSize-width={2048}
           shadow-mapSize-height={2048}
           shadow-camera-left={-100}
@@ -49,11 +60,12 @@ export default function TrafficScene3D() {
         <pointLight position={[-40, 30, -40]} intensity={0.25} color="#3b82f6" />
         <pointLight position={[40, 30, 40]} intensity={0.25} color="#3b82f6" />
         
-        <fog attach="fog" args={['#0a0a0a', 100, 200]} />
+        <fog attach="fog" args={['#1a1f2e', 100, 200]} />
         
+        {/* Ground that blends with theme */}
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]} receiveShadow>
           <planeGeometry args={[300, 300]} />
-          <meshStandardMaterial color="#0f0f0f" />
+          <meshStandardMaterial color="#151a27" />
         </mesh>
         
         <Suspense fallback={null}>
@@ -71,17 +83,23 @@ export default function TrafficScene3D() {
             lightStatus={debouncedLights}
           />
           
-          <mesh position={[0, 0, 0]} receiveShadow>
-            <boxGeometry args={[90, 0.3, 8]} />
-            <meshStandardMaterial color="#5a5a5a" />
+          {/* Connecting road slightly lifted to avoid z-fighting */}
+          <mesh position={[0, 0.025, 0]} receiveShadow>
+            <boxGeometry args={[48, 0.3, 8]} />
+            <meshStandardMaterial color="#5a5a5a" polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
+          </mesh>
+
+          {/* Grass patches for visual context */}
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[-45, -0.49, 0]} receiveShadow>
+            <planeGeometry args={[80, 80]} />
+            <meshStandardMaterial color="#1a4d20" />
+          </mesh>
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[45, -0.49, 0]} receiveShadow>
+            <planeGeometry args={[80, 80]} />
+            <meshStandardMaterial color="#1a4d20" />
           </mesh>
           
-          {Array.from({ length: 20 }).map((_, i) => (
-            <mesh key={`center-${i}`} position={[-42 + i * 4.5, 0.11, 0]}>
-              <boxGeometry args={[2, 0.05, 0.15]} />
-              <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.2} />
-            </mesh>
-          ))}
+          {/* Center lane marking on connecting road - REMOVED for cleaner look */}
         </Suspense>
       </Canvas>
     </div>

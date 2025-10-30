@@ -28,7 +28,8 @@ export default function EmergencyAlert() {
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -100, opacity: 0 }}
-          className="bg-red-500 text-white px-6 py-4 flex items-center justify-between animate-pulse"
+          className="bg-gradient-to-r from-red-600 via-red-500 to-orange-500 text-white px-8 py-5 flex items-center justify-between shadow-2xl"
+          style={{ boxShadow: '0 10px 40px rgba(239,68,68,0.5), 0 0 60px rgba(239,68,68,0.3)' }}
         >
           <div className="flex items-center gap-4">
             {getIcon(emergency.type)}

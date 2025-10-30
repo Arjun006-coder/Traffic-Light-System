@@ -231,3 +231,7 @@ The 3D scene should load with:
 Then test with data insertion in Supabase!
 
 
+
+
+
+
