@@ -33,3 +33,5 @@ VALUES ('ambulance','int1','north',48,'active',1);
 -- Stats snapshot
 INSERT INTO stats (total_vehicles_today, avg_wait_time, emergencies_handled, accidents_detected, fuel_saved_estimate)
 VALUES (320, 18.5, 2, 0, 16.0);
+
+

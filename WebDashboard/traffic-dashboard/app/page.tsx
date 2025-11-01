@@ -26,7 +26,7 @@ const TrafficScene3D = dynamic(
 
 export default function Dashboard() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1a1f2e] via-[#151a27] to-[#1a1f2e] text-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#202739] via-[#1a2230] to-[#202739] text-white">
       {/* Header */}
       <header className="glass-effect border-b border-gray-700/50 px-8 py-4 backdrop-blur-xl">
         <div className="flex items-center justify-between">

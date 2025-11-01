@@ -16,7 +16,7 @@ export default function TrafficScene3D() {
   const debouncedLights = useDebounce(lightStatus, 150)
   
   return (
-    <div className="w-full h-full bg-gradient-to-b from-[#1a1f2e] to-[#0f1419] relative">
+    <div className="w-full h-full bg-gradient-to-b from-[#202739] to-[#141a24] relative">
       <div className="absolute top-6 left-6 z-10 glass-effect px-4 py-3 rounded-lg border border-gray-700">
         <div className="flex items-center gap-3">
           <div className="flex gap-2">
@@ -44,7 +44,7 @@ export default function TrafficScene3D() {
           target={[0, 0, 0]}
         />
         
-        <ambientLight intensity={1.2} />
+        <ambientLight intensity={1.4} />
         <directionalLight
           position={[60, 60, 60]}
           intensity={0.9}
@@ -65,7 +65,7 @@ export default function TrafficScene3D() {
         {/* Ground that blends with theme */}
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]} receiveShadow>
           <planeGeometry args={[300, 300]} />
-          <meshStandardMaterial color="#151a27" />
+          <meshStandardMaterial color="#1b2333" />
         </mesh>
         
         <Suspense fallback={null}>

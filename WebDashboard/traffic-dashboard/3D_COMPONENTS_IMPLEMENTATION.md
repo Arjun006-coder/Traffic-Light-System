@@ -235,3 +235,5 @@ Then test with data insertion in Supabase!
 
 
 
+
+
