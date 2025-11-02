@@ -5,14 +5,18 @@ import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import { Suspense } from 'react'
 import Intersection from '@/components/scene/Intersection'
 import { useVehicleDetections } from '@/hooks/useVehicleDetections'
+import { useVehicleTracks } from '@/hooks/useVehicleTracks'
 import { useLightStatus } from '@/hooks/useLightStatus'
 import { useDebounce } from '@/hooks/useDebounce'
+import WorldVehicle from '@/components/scene/WorldVehicle'
 
 export default function TrafficScene3D() {
   const vehicleData = useVehicleDetections()
+  const { tracks: vehicleTracks } = useVehicleTracks()  // Get vehicles with world coordinates
   const lightStatus = useLightStatus()
   
   const debouncedVehicles = useDebounce(vehicleData, 150)
+  const debouncedTracks = useDebounce(vehicleTracks, 150)
   const debouncedLights = useDebounce(lightStatus, 150)
   
   return (
@@ -100,6 +104,35 @@ export default function TrafficScene3D() {
           </mesh>
           
           {/* Center lane marking on connecting road - REMOVED for cleaner look */}
+          
+          {/* Render vehicles using world coordinates (if available) */}
+          {Object.keys(debouncedTracks).length > 0 && (() => {
+            const vehicleEntries = Object.entries(debouncedTracks)
+            const totalVehicles = vehicleEntries.reduce((sum, [, tracks]) => sum + tracks.length, 0)
+            console.log(`[TrafficScene3D] Rendering ${totalVehicles} vehicles from ${vehicleEntries.length} intersection-lane groups`)
+            
+            return vehicleEntries.flatMap(([key, trackList]) => {
+              const [intersection] = key.split('-')
+              const intersectionPos = intersection === 'int1' ? [-45, 0, 0] as [number, number, number] : [45, 0, 0] as [number, number, number]
+              
+              return trackList.map((track) => {
+                console.log(`[TrafficScene3D] Rendering track ${track.track_id} at (${track.world_x}, ${track.world_y}), type=${track.vehicleType}`)
+                return (
+                  <WorldVehicle
+                    key={`${track.track_id}-${track.id}`}
+                    vehicle={{
+                      track_id: track.track_id,
+                      world_x: track.world_x,
+                      world_y: track.world_y,
+                      vehicleType: track.vehicleType
+                    }}
+                    intersectionPosition={intersectionPos}
+                    intersectionSize={24}
+                  />
+                )
+              })
+            })
+          })()}
         </Suspense>
       </Canvas>
     </div>

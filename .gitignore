@@ -205,3 +205,14 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Large files - datasets, models, archives
+*.zip
+*.bin
+*.pt
+*.gltf
+*.glb
+Datasets/
+WebDashboard/traffic-dashboard/public/models/
+Ai-ml/detection/
+runs/

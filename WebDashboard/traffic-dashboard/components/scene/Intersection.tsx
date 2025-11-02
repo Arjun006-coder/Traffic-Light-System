@@ -88,11 +88,15 @@ export default function Intersection({ position, name, vehicleData, lightStatus 
         <meshStandardMaterial color="#6a6a6a" polygonOffset polygonOffsetFactor={1} polygonOffsetUnits={1} />
       </mesh>
 
-      {/* Traffic lights and vehicles for each lane */}
+      {/* Traffic lights and vehicles for each lane (aggregate counts - fallback when world coordinates not available) */}
       {lanes.map(({ lane, lightPos, vehicleStart, direction }) => {
         const key = `${name}-${lane}`
         const vehicles = vehicleData[key] || { cars: 0, bikes: 0, buses: 0, trucks: 0 }
         const light = lightStatus[key] || { color: 'red', duration: 30 }
+        
+        // Only show aggregate vehicles if no world-coordinate vehicles exist for this lane
+        // (World-coordinate vehicles are rendered separately in TrafficScene3D)
+        const showAggregate = false  // Disable aggregate rendering when using world coordinates
         
         const vehicleList: Array<{type: string, position: [number, number, number]}> = []
         let offset = 0
@@ -132,7 +136,8 @@ export default function Intersection({ position, name, vehicleData, lightStatus 
               currentColor={light.color || 'red'}
             />
             
-            {vehicleList.map((vehicle, idx) => (
+            {/* Render aggregate vehicles only if showAggregate is true */}
+            {showAggregate && vehicleList.map((vehicle, idx) => (
               <Vehicle
                 key={`${key}-${vehicle.type}-${idx}`}
                 type={vehicle.type as any}

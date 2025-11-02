@@ -1,0 +1,18 @@
+# Python dependencies for Traffic Light System
+# Install with: pip install -r requirements.txt
+
+# Environment variable loading
+python-dotenv>=1.0.0
+
+# HTTP requests (for Supabase API)
+requests>=2.31.0
+
+# Add other AI/ML dependencies as needed
+# Example:
+# numpy>=1.24.0
+# opencv-python>=4.8.0
+# tensorflow>=2.13.0
+# torch>=2.0.0
+
+
+
